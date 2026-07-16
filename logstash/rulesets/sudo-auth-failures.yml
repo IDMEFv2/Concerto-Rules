@@ -1,0 +1,15 @@
+ruleset:
+  name: sudo-auth-failures
+  field: "[Attachment][RawLog][Content][message]"
+  predicate:
+    operator: in
+    operands:
+      - operator: variable
+        operands: "[Attachment][RawLog][Content][process][name]"
+      - operator: constant
+        operands: "sudo"
+  rules:
+    - id: 2702
+      pattern: "(?=%{USERNAME:[Attachment][RawLog][Content][related][user]})%{USERNAME:[Attachment][RawLog][Content][target][user][name]} : %{NUMBER:[Attachment][RawLog][Content][event][count]:int} incorrect password attempts ; TTY=%{GREEDYDATA} ; PWD=%{DATA:[Attachment][RawLog][Content][process][working_directory]} ; USER=(?=%{USERNAME:[Attachment][RawLog][Content][related][user]})%{USERNAME:[Attachment][RawLog][Content][target][user][effective][name]} ; COMMAND=%{GREEDYDATA:[Attachment][RawLog][Content][process][command_line]}"
+      samples:
+        - "Jul 13 12:00:05 testhost sudo[1234]: john : 3 incorrect password attempts ; TTY=pts/0 ; PWD=/home/john ; USER=root ; COMMAND=/bin/bash"

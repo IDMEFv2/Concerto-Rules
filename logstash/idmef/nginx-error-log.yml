@@ -1,0 +1,11 @@
+ruleset:
+  name: nginx-error-log
+  rules:
+    - id: 5644
+      fields:
+        "[Source][0][IP]": "%{[Attachment][RawLog][Content][source][address]}"
+        "[Target][0][Hostname]": "%{[Attachment][RawLog][Content][host][hostname]}"
+        "[Target][0][Service]": "nginx"
+        "[Category][0]": "Access.Unauthorized"
+        "[Priority]": "Medium"
+        "[Description]": "Nginx error on %{[Attachment][RawLog][Content][http][method]} %{[Attachment][RawLog][Content][http][request]} from %{[Attachment][RawLog][Content][source][address]}"

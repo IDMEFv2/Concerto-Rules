@@ -1,0 +1,22 @@
+ruleset:
+  name: ssh-auth-failures
+  description: "SSH, is a cryptographic (encrypted) network protocol to allow remote login and other network services to operate securely over an unsecured network."
+  field: "[Attachment][RawLog][Content][message]"
+  predicate:
+    operator: in
+    operands:
+      - operator: variable
+        operands: "[Attachment][RawLog][Content][process][name]"
+      - operator: constant
+        operands: "sshd"
+  rules:
+    - id: 1915
+      pattern: "message repeated %{NUMBER:[Attachment][RawLog][Content][event][count]:int} times: \\[ Failed password for %{USERNAME:[Attachment][RawLog][Content][destination][user][name]} from %{IPORHOST:[Attachment][RawLog][Content][source][address]} port %{POSINT:[Attachment][RawLog][Content][source][port]:int}"
+      outcome: "failure"
+      samples:
+        - "Jul 13 12:00:01 srv1 sshd[24541]: message repeated 3 times: [ Failed password for root from 218.92.0.34 port 51044 ssh2]"
+    - id: 1918
+      pattern: "maximum authentication attempts exceeded for (invalid user )?%{USERNAME:[Attachment][RawLog][Content][destination][user][name]} from %{IPORHOST:[Attachment][RawLog][Content][source][address]} port %{POSINT:[Attachment][RawLog][Content][source][port]:int}"
+      outcome: "failure"
+      samples:
+        - "Jul 13 12:00:04 srv1 sshd[24544]: error: maximum authentication attempts exceeded for root from 222.186.30.112 port 12345 ssh2 [preauth]"

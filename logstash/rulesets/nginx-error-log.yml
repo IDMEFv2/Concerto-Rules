@@ -1,0 +1,15 @@
+ruleset:
+  name: nginx-error-log
+  field: "[Attachment][RawLog][Content][message]"
+  predicate:
+    operator: in
+    operands:
+      - operator: variable
+        operands: "[Attachment][RawLog][Content][process][name]"
+      - operator: constant
+        operands: "nginx"
+  rules:
+    - id: 5644
+      pattern: "\\[error\\] %{DATA} client: %{IPORHOST:[Attachment][RawLog][Content][source][address]}, server: %{DATA}, request: \"%{WORD:[Attachment][RawLog][Content][http][method]} %{DATA:[Attachment][RawLog][Content][http][request]} HTTP/%{NUMBER:[Attachment][RawLog][Content][http][version]}\""
+      samples:
+        - "2024/07/18 06:09:30 [error] 1234#0: *5 open() \"/usr/share/nginx/html/admin\" failed (2: No such file or directory), client: 203.0.113.9, server: _, request: \"GET /admin HTTP/1.1\", host: \"example.com\""

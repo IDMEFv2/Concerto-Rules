@@ -1,0 +1,26 @@
+title: Nginx HTTP error
+name: nginx_http_error
+description: Nginx error events (access log 4xx/5xx and error log).
+logsource:
+    category: alerts
+detection:
+    selection:
+        Target_Service: nginx
+    condition: selection
+---
+title: Nginx scanning (single source IP)
+description: Many HTTP errors from a single source IP in a short window (possible directory/vulnerability scan).
+idmefv2:
+  Category:
+    - "Recon.Network"
+  Priority: "High"
+correlation:
+    type: event_count
+    rules:
+        - nginx_http_error
+    group-by:
+        - Source_IP
+    timespan: 1m
+    condition:
+        gte: 15
+    generate: true

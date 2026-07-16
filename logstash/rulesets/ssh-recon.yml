@@ -1,0 +1,23 @@
+ruleset:
+  name: ssh-recon
+  description: "SSH, is a cryptographic (encrypted) network protocol to allow remote login and other network services to operate securely over an unsecured network."
+  field: "[Attachment][RawLog][Content][message]"
+  predicate:
+    operator: in
+    operands:
+      - operator: variable
+        operands: "[Attachment][RawLog][Content][process][name]"
+      - operator: constant
+        operands: "sshd"
+  rules:
+    - id: 1916
+      pattern: "Connection closed by (authenticating user %{USERNAME:[Attachment][RawLog][Content][destination][user][name]} )?%{IPORHOST:[Attachment][RawLog][Content][source][address]} port %{POSINT:[Attachment][RawLog][Content][source][port]:int}"
+      outcome: "failure"
+      samples:
+        - "Jul 13 12:03:00 srv1 sshd[24570]: Connection closed by 185.220.101.5 port 54321 [preauth]"
+        - "Jul 13 12:03:01 srv1 sshd[24571]: Connection closed by authenticating user root 203.0.113.9 port 40000 [preauth]"
+    - id: 1917
+      pattern: "reverse mapping checking getaddrinfo for %{DATA} \\[%{IP:[Attachment][RawLog][Content][source][address]}\\]%{DATA}POSSIBLE BREAK-IN ATTEMPT!"
+      outcome: "failure"
+      samples:
+        - "Jul 13 12:00:03 srv1 sshd[24543]: reverse mapping checking getaddrinfo for broadband.example.net [203.0.113.5] failed - POSSIBLE BREAK-IN ATTEMPT!"

@@ -1,0 +1,35 @@
+ruleset:
+  name: ssh-recon
+  rules:
+    - id: 1916
+      fields:
+        "[@metadata][IDMEFv2][source]": "source"
+        "[@metadata][IDMEFv2][target]": "host"
+        "[Category][0]": "Recon.Network"
+        "[Analyzer][Data]":
+          - "Log"
+          - "Auth"
+        "[Analyzer][Type]": "Cyber"
+        "[Source][0][IP]": "%{[Attachment][RawLog][Content][source][address]}"
+        "[Source][0][Protocol]":
+          - "tcp"
+          - "ssh"
+        "[Target][0][Service]": "%{[Attachment][RawLog][Content][process][name]}"
+        "[Priority]": "Low"
+        "[Description]": "SSH connection closed before authentication from %{[Attachment][RawLog][Content][source][address]}"
+    - id: 1917
+      fields:
+        "[@metadata][IDMEFv2][source]": "source"
+        "[@metadata][IDMEFv2][target]": "host"
+        "[Category][0]": "Recon.Network"
+        "[Analyzer][Data]":
+          - "Log"
+          - "Auth"
+        "[Analyzer][Type]": "Cyber"
+        "[Source][0][IP]": "%{[Attachment][RawLog][Content][source][address]}"
+        "[Source][0][Protocol]":
+          - "tcp"
+          - "ssh"
+        "[Target][0][Service]": "%{[Attachment][RawLog][Content][process][name]}"
+        "[Priority]": "High"
+        "[Description]": "Reverse-DNS mismatch from %{[Attachment][RawLog][Content][source][address]} - possible break-in attempt"

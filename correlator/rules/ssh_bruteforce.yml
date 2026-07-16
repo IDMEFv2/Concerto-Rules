@@ -1,0 +1,27 @@
+title: Failed SSH authentication
+name: failed_ssh_auth
+description: Failed SSH authentication events reported by sshd.
+logsource:
+    category: alerts
+detection:
+    selection:
+        Category: Access.Other
+        Target_Service: sshd
+    condition: selection
+---
+title: SSH bruteforce (single source IP)
+description: Many failed SSH logins coming from a single source IP (possible brute force).
+idmefv2:
+  Category:
+    - "Access.Forced"
+  Priority: "High"
+correlation:
+    type: event_count
+    rules:
+        - failed_ssh_auth
+    group-by:
+        - Source_IP
+    timespan: 5m
+    condition:
+        gte: 10
+    generate: true

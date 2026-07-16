@@ -1,0 +1,37 @@
+ruleset:
+  name: ssh-auth-failures
+  rules:
+    - id: 1915
+      fields:
+        "[@metadata][IDMEFv2][source]": "source"
+        "[@metadata][IDMEFv2][target]": "host"
+        "[Category][0]": "Access.Other"
+        "[Analyzer][Data]":
+          - "Log"
+          - "Auth"
+        "[Analyzer][Type]": "Cyber"
+        "[Source][0][IP]": "%{[Attachment][RawLog][Content][source][address]}"
+        "[Source][0][Protocol]":
+          - "tcp"
+          - "ssh"
+        "[Target][0][Service]": "%{[Attachment][RawLog][Content][process][name]}"
+        "[Target][0][User]": "%{[Attachment][RawLog][Content][destination][user][name]}"
+        "[Priority]": "Medium"
+        "[Description]": "%{[Attachment][RawLog][Content][event][count]} repeated failed SSH logins for '%{[Attachment][RawLog][Content][destination][user][name]}' from %{[Attachment][RawLog][Content][source][address]}"
+    - id: 1918
+      fields:
+        "[@metadata][IDMEFv2][source]": "source"
+        "[@metadata][IDMEFv2][target]": "host"
+        "[Category][0]": "Access.Other"
+        "[Analyzer][Data]":
+          - "Log"
+          - "Auth"
+        "[Analyzer][Type]": "Cyber"
+        "[Source][0][IP]": "%{[Attachment][RawLog][Content][source][address]}"
+        "[Source][0][Protocol]":
+          - "tcp"
+          - "ssh"
+        "[Target][0][Service]": "%{[Attachment][RawLog][Content][process][name]}"
+        "[Target][0][User]": "%{[Attachment][RawLog][Content][destination][user][name]}"
+        "[Priority]": "Medium"
+        "[Description]": "Maximum SSH authentication attempts exceeded for '%{[Attachment][RawLog][Content][destination][user][name]}' from %{[Attachment][RawLog][Content][source][address]}"
