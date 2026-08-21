@@ -8,8 +8,8 @@ ruleset:
         "[Category][0]": "Access.Other"
         "[Analyzer][Data]":
           - "Log"
-          - "Auth"
-        "[Analyzer][Type]": "Cyber"
+          - "Authentication"
+        "[Type][0]": "Cyber"
         "[Source][0][IP]": "%{[Attachment][RawLog][Content][source][address]}"
         "[Source][0][Protocol]":
           - "tcp"
@@ -25,8 +25,8 @@ ruleset:
         "[Category][0]": "Access.Other"
         "[Analyzer][Data]":
           - "Log"
-          - "Auth"
-        "[Analyzer][Type]": "Cyber"
+          - "Authentication"
+        "[Type][0]": "Cyber"
         "[Source][0][IP]": "%{[Attachment][RawLog][Content][source][address]}"
         "[Source][0][Protocol]":
           - "tcp"

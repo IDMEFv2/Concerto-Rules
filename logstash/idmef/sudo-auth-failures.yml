@@ -13,8 +13,8 @@ ruleset:
         "[Category][0]": "Access.Other"
         "[Analyzer][Data]":
           - "Log"
-          - "Auth"
-        "[Analyzer][Type]": "Cyber"
+          - "Authentication"
+        "[Type][0]": "Cyber"
         "[Target][0][Service]": "%{[Attachment][RawLog][Content][process][name]}"
         "[Target][0][User]": "%{[Attachment][RawLog][Content][target][user][name]}"
         "[Target][0][Hostname]": "%{[Attachment][RawLog][Content][host][hostname]}"
