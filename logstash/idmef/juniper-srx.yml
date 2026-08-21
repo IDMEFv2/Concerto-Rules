@@ -1,0 +1,86 @@
+ruleset:
+  name: juniper-srx
+  rules:
+  - id: 22001
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Unauthorized
+      '[Analyzer][Data]': &id001
+      - Log
+      - Network
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Low
+      '[Description]': SRX flow session deny from %{[Attachment][RawLog][Content][source][address]}:%{[Attachment][RawLog][Content][source][port]} to %{[Attachment][RawLog][Content][destination][address]}:%{[Attachment][RawLog][Content][destination][port]}
+  - id: 22002
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Fraud.Masquerade
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Medium
+      '[Description]': 'SRX: ARP info overwritten for %{[Attachment][RawLog][Content][destination][address]} (possible ARP spoofing)'
+  - id: 22003
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Availability.Misconfiguration
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Low
+      '[Description]': 'SRX: IPsec policy lookup failed (destination %{[Attachment][RawLog][Content][destination][address]})'
+  - id: 22004
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Other.Undetermined
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Medium
+      '[Description]': SRX screen alert (TCP) from %{[Attachment][RawLog][Content][source][address]}:%{[Attachment][RawLog][Content][source][port]} to %{[Attachment][RawLog][Content][destination][address]}:%{[Attachment][RawLog][Content][destination][port]}
+  - id: 22005
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Authorized
+      '[Analyzer][Data]':
+      - Log
+      - Authentication
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][target][name]}'
+      '[Priority]': Info
+      '[Description]': 'SRX: authenticated user %{[Attachment][RawLog][Content][user][target][name]}'
+  - id: 22006
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Authorized
+      '[Analyzer][Data]':
+      - Log
+      - Authentication
+      '[Priority]': Info
+      '[Description]': 'SRX: user login on management interface from %{[Attachment][RawLog][Content][source][address]}'
+  - id: 22007
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Authorized
+      '[Analyzer][Data]': *id001
+      '[Source][0][User]': '%{[Attachment][RawLog][Content][user][name]}'
+      '[Priority]': Info
+      '[Description]': 'SRX: command line entered by user %{[Attachment][RawLog][Content][user][name]}'
+  - id: 22008
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Other.Undetermined
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][target][name]}'
+      '[Priority]': Medium
+      '[Description]': SRX screen alert from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}

@@ -1,0 +1,333 @@
+ruleset:
+  name: cisco-asa
+  rules:
+  - id: 195
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Unauthorized
+      '[Analyzer][Data]': &id001
+      - Log
+      - Network
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Low
+      '[Description]': 'ASA dropped %{[Attachment][RawLog][Content][network][transport]} %{[Attachment][RawLog][Content][network][protocol]} packet from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}: %{[Attachment][RawLog][Content][event][reason]}'
+  - id: 196
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Other.Undetermined
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Medium
+      '[Description]': 'ASA IPS alert: %{[Attachment][RawLog][Content][event][reason]} from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}'
+  - id: 197
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Authorized
+      '[Analyzer][Data]':
+      - Log
+      - Authentication
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][target][name]}'
+      '[Priority]': Info
+      '[Description]': ASA login permitted from %{[Attachment][RawLog][Content][source][address]} for user %{[Attachment][RawLog][Content][user][target][name]}
+  - id: 198
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Authorized
+      '[Analyzer][Data]':
+      - Log
+      - Authentication
+      '[Source][0][User]': '%{[Attachment][RawLog][Content][user][name]}'
+      '[Priority]': Medium
+      '[Description]': ASA user %{[Attachment][RawLog][Content][user][name]} executed the 'enable' command
+  - id: 199
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Authorized
+      '[Analyzer][Data]': *id001
+      '[Source][0][User]': '%{[Attachment][RawLog][Content][user][name]}'
+      '[Priority]': Info
+      '[Description]': ASA user %{[Attachment][RawLog][Content][user][name]} executed a command
+  - id: 200
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Unauthorized
+      '[Analyzer][Data]':
+      - Log
+      - Authentication
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][name]}'
+      '[Priority]': Medium
+      '[Description]': ASA AAA credentials rejected for user %{[Attachment][RawLog][Content][user][name]} (server %{[Attachment][RawLog][Content][source][address]})
+  - id: 201
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Availability.Failure
+      '[Analyzer][Data]': *id001
+      '[Priority]': Medium
+      '[Description]': ASA marked RADIUS AAA server as FAILED
+  - id: 202
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Availability.Failure
+      '[Analyzer][Data]': *id001
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][target][name]}'
+      '[Priority]': Low
+      '[Description]': ASA attempting AAA fallback method for user %{[Attachment][RawLog][Content][user][target][name]}
+  - id: 203
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Authorized
+      '[Analyzer][Data]': *id001
+      '[Priority]': Info
+      '[Description]': ASA configuration write started
+  - id: 204
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Authorized
+      '[Analyzer][Data]': *id001
+      '[Source][0][User]': '%{[Attachment][RawLog][Content][user][name]}'
+      '[Priority]': Info
+      '[Description]': ASA user %{[Attachment][RawLog][Content][user][name]} logged out
+  - id: 205
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Unauthorized
+      '[Analyzer][Data]':
+      - Log
+      - Authentication
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][target][name]}'
+      '[Priority]': Medium
+      '[Description]': ASA login denied from %{[Attachment][RawLog][Content][source][address]} for user %{[Attachment][RawLog][Content][user][target][name]}
+  - id: 206
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Forced
+      '[Analyzer][Data]':
+      - Log
+      - Authentication
+      '[Priority]': Medium
+      '[Description]': ASA console enable password incorrect after several tries
+  - id: 207
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Other
+      '[Analyzer][Data]': *id001
+      '[Priority]': Info
+      '[Description]': ASA SSH session from %{[Attachment][RawLog][Content][source][address]} disconnected by SSH server
+  - id: 208
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Availability.DoS
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': High
+      '[Description]': ASA embryonic connection limit exceeded from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]} (possible SYN flood)
+  - id: 209
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Unauthorized
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Low
+      '[Description]': ASA denied IP packet with IP options from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}
+  - id: 210
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Fraud.Masquerade
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Medium
+      '[Description]': ASA reverse path check failed from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]} (possible spoofing)
+  - id: 211
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Availability.DoS
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Medium
+      '[Description]': ASA fragment database limit exceeded (src %{[Attachment][RawLog][Content][source][address]}, dst %{[Attachment][RawLog][Content][destination][address]})
+  - id: 212
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Other.Undetermined
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Low
+      '[Description]': ASA invalid transport field from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}
+  - id: 213
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Fraud.Masquerade
+      '[Analyzer][Data]': *id001
+      '[Priority]': Medium
+      '[Description]': ASA received ARP collision from %{[Attachment][RawLog][Content][source][address]} (possible ARP spoofing)
+  - id: 214
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Unauthorized
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Low
+      '[Description]': ASA %{[Attachment][RawLog][Content][network][transport]} access denied by ACL from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}
+  - id: 215
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Other.Undetermined
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Low
+      '[Description]': 'ASA translation creation failed: destination is network/broadcast IP (src %{[Attachment][RawLog][Content][source][address]})'
+  - id: 216
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Other.Undetermined
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Low
+      '[Description]': ASA invalid destination for ICMP error message (src %{[Attachment][RawLog][Content][source][address]})
+  - id: 219
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Unauthorized
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Low
+      '[Description]': ASA denied inbound UDP from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}
+  - id: 221
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Availability.DoS
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': High
+      '[Description]': ASA denied IP due to Land Attack from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}
+  - id: 222
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Other.Undetermined
+      '[Analyzer][Data]': *id001
+      '[Priority]': Low
+      '[Description]': ASA regular translation creation failed for ICMP
+  - id: 223
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Other.Undetermined
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Low
+      '[Description]': ASA invalid destination for ICMP error message (src %{[Attachment][RawLog][Content][source][address]})
+  - id: 224
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Unauthorized
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Low
+      '[Description]': ASA %{[Attachment][RawLog][Content][network][transport]} request discarded from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}
+  - id: 500
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Other.Undetermined
+      '[Analyzer][Data]': *id001
+      '[Priority]': Medium
+      '[Description]': ASA threat-detection drop rate exceeded
+  - id: 502
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Fraud.Masquerade
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Medium
+      '[Description]': ASA denied connection spoof from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}
+  - id: 503
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Availability.Overload
+      '[Analyzer][Data]': *id001
+      '[Priority]': Low
+      '[Description]': 'ASA: number of ACL log deny-flows has reached limit'
+  - id: 504
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Authorized
+      '[Analyzer][Data]': *id001
+      '[Source][0][User]': '%{[Attachment][RawLog][Content][user][name]}'
+      '[Priority]': Medium
+      '[Description]': ASA user %{[Attachment][RawLog][Content][user][name]} executed the 'configure terminal' command
+  - id: 505
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Unauthorized
+      '[Analyzer][Data]': *id001
+      '[Priority]': Medium
+      '[Description]': ASA RIP authentication failed from %{[Attachment][RawLog][Content][source][address]}
+  - id: 506
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Other.Undetermined
+      '[Analyzer][Data]': *id001
+      '[Priority]': Low
+      '[Description]': ASA RIP packet failed
+  - id: 507
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Availability.Overload
+      '[Analyzer][Data]': *id001
+      '[Priority]': Medium
+      '[Description]': ASA user exceeded auth proxy connection limit

@@ -1,0 +1,68 @@
+ruleset:
+  name: sonicwall
+  rules:
+  - id: 4600
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Other
+      '[Analyzer][Data]':
+      - Log
+      - Authentication
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][target][name]}'
+      '[Priority]': Medium
+      '[Description]': SonicWall management event for user %{[Attachment][RawLog][Content][user][target][name]} from %{[Attachment][RawLog][Content][source][address]}
+  - id: 4601
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Fraud.Masquerade
+      '[Analyzer][Data]': &id001
+      - Log
+      - Network
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Medium
+      '[Description]': 'SonicWall: IP spoof dropped from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}'
+  - id: 4602
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Other.Undetermined
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Low
+      '[Description]': SonicWall event from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}:%{[Attachment][RawLog][Content][destination][port]}
+  - id: 4603
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Other.Undetermined
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Low
+      '[Description]': SonicWall event from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}:%{[Attachment][RawLog][Content][destination][port]}
+  - id: 4604
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Availability.DoS
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': High
+      '[Description]': 'SonicWall: possible SYN flood from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}:%{[Attachment][RawLog][Content][destination][port]}'
+  - id: 4605
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Recon.Network
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Medium
+      '[Description]': 'SonicWall: possible port scan dropped from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}'

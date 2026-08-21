@@ -1,0 +1,33 @@
+ruleset:
+  name: su
+  rules:
+  - id: 10002
+    translate:
+    - source: '[Attachment][RawLog][Content][user][effective][name]'
+      target: '[Priority]'
+      dictionary:
+        root: High
+      fallback: Medium
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Escalation
+      '[Analyzer][Data]': &id001
+      - Log
+      - Authentication
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][effective][name]}'
+      '[Description]': Failed su attempt by user %{[Attachment][RawLog][Content][user][name]} to become %{[Attachment][RawLog][Content][user][effective][name]}
+  - id: 10000
+    translate:
+    - source: '[Attachment][RawLog][Content][user][effective][name]'
+      target: '[Priority]'
+      dictionary:
+        root: Medium
+      fallback: Info
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Authorized
+      '[Analyzer][Data]': *id001
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][effective][name]}'
+      '[Description]': User %{[Attachment][RawLog][Content][user][name]} switched to user %{[Attachment][RawLog][Content][user][effective][name]} (su)

@@ -1,0 +1,63 @@
+ruleset:
+  name: cisco-ips
+  rules:
+  - id: 5006
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Availability.HeartBeat
+      '[Analyzer][Data]': &id001
+      - Log
+      - Network
+      '[Priority]': Info
+      '[Description]': Cisco IPS status trap received
+  - id: 5001
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Other.Undetermined
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Info
+      '[Description]': Cisco IPS signature fired (informational) from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}
+  - id: 5002
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Other.Undetermined
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Info
+      '[Description]': Cisco IPS signature fired (informational) from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}
+  - id: 5003
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Other.Undetermined
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Info
+      '[Description]': Cisco IPS signature fired (informational) from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}
+  - id: 5004
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Other.Undetermined
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Info
+      '[Description]': Cisco IPS signature fired (informational) from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}
+  - id: 5005
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Other.Undetermined
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Medium
+      '[Description]': Cisco IPS signature fired from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}

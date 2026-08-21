@@ -1,0 +1,37 @@
+ruleset:
+  name: intrushield
+  rules:
+  - id: 24901
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Availability.Failure
+      '[Analyzer][Data]': &id001
+      - Log
+      - Network
+      '[Priority]': Medium
+      '[Description]': 'IntruShield sensor fault: link failure, port down'
+  - id: 24902
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Availability.Outage
+      '[Analyzer][Data]': *id001
+      '[Priority]': Medium
+      '[Description]': IntruShield sensor unreachable
+  - id: 24903
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Availability.HeartBeat
+      '[Analyzer][Data]': *id001
+      '[Priority]': Low
+      '[Description]': IntruShield sensor power-up or reboot
+  - id: 24904
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Availability.Failure
+      '[Analyzer][Data]': *id001
+      '[Priority]': Medium
+      '[Description]': IntruShield sensor reports alert channel as down

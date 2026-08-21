@@ -1,0 +1,67 @@
+ruleset:
+  name: paloalto
+  rules:
+  - id: 24601
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Other.Undetermined
+      '[Analyzer][Data]': &id001
+      - Log
+      - Network
+      '[Priority]': Medium
+      '[Description]': Palo Alto THREAT event detected
+  - id: 24602
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Unauthorized
+      '[Analyzer][Data]':
+      - Log
+      - Authentication
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][target][name]}'
+      '[Priority]': Medium
+      '[Description]': 'Palo Alto: authentication failed for user %{[Attachment][RawLog][Content][user][target][name]} from %{[Attachment][RawLog][Content][source][address]}'
+  - id: 24603
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Authorized
+      '[Analyzer][Data]':
+      - Log
+      - Authentication
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][target][name]}'
+      '[Priority]': Info
+      '[Description]': 'Palo Alto: user %{[Attachment][RawLog][Content][user][target][name]} logged in from %{[Attachment][RawLog][Content][source][address]}'
+  - id: 24604
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Authorized
+      '[Analyzer][Data]':
+      - Log
+      - Authentication
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][target][name]}'
+      '[Priority]': Info
+      '[Description]': 'Palo Alto: accepted password for user %{[Attachment][RawLog][Content][user][target][name]} from %{[Attachment][RawLog][Content][source][address]}'
+  - id: 24605
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Availability.HeartBeat
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][target][address]}'
+      '[Priority]': Info
+      '[Description]': 'Palo Alto: connected to management server %{[Attachment][RawLog][Content][target][address]}'
+  - id: 24606
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Operational.Other
+      '[Analyzer][Data]': *id001
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][target][name]}'
+      '[Priority]': Info
+      '[Description]': 'Palo Alto: software package upgraded by user %{[Attachment][RawLog][Content][user][target][name]}'

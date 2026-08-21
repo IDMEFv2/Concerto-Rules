@@ -1,0 +1,61 @@
+ruleset:
+  name: checkpoint
+  rules:
+  - id: 100
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Unauthorized
+      '[Analyzer][Data]': &id001
+      - Log
+      - Network
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Low
+      '[Description]': CheckPoint FW-1 dropped %{[Attachment][RawLog][Content][network][transport]} from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}:%{[Attachment][RawLog][Content][destination][port]}
+  - id: 104
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Authorized
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Info
+      '[Description]': CheckPoint FW-1 accepted %{[Attachment][RawLog][Content][network][transport]} from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}:%{[Attachment][RawLog][Content][destination][port]}
+  - id: 112
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Other.Undetermined
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Medium
+      '[Description]': 'CheckPoint SmartDefense attack: %{[Attachment][RawLog][Content][event][reason]} from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}'
+  - id: 115
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Other.Undetermined
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Medium
+  - id: 119
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Other.Undetermined
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Medium
+  - id: 127
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Other.Undetermined
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Medium

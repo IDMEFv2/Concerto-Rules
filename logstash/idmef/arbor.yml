@@ -1,0 +1,67 @@
+ruleset:
+  name: arbor
+  rules:
+  - id: 4300
+    translate:
+    - source: '[Attachment][RawLog][Content][severity]'
+      target: '[Priority]'
+      dictionary:
+        '5': High
+        '4': High
+        '3': Medium
+        '2': Low
+        '1': Low
+      fallback: Medium
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Availability.DDoS
+      '[Analyzer][Data]': &id001
+      - Log
+      - Flow
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Description]': Arbor DoS anomaly id %{[Attachment][RawLog][Content][id]} (%{[Attachment][RawLog][Content][status]}, severity %{[Attachment][RawLog][Content][severity]}) from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}
+  - id: 4301
+    translate:
+    - source: '[Attachment][RawLog][Content][severity]'
+      target: '[Priority]'
+      dictionary:
+        '5': High
+        '4': High
+        '3': Medium
+        '2': Low
+        '1': Low
+      fallback: Medium
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Availability.DDoS
+      '[Analyzer][Data]': *id001
+      '[Description]': Arbor DoS anomaly id %{[Attachment][RawLog][Content][id]} (%{[Attachment][RawLog][Content][status]}, severity %{[Attachment][RawLog][Content][severity]}) on interface %{[Attachment][RawLog][Content][interface]}
+  - id: 4302
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Availability.Failure
+      '[Analyzer][Data]': *id001
+      '[Priority]': Low
+      '[Description]': Arbor collector %{[Attachment][RawLog][Content][collector]} is %{[Attachment][RawLog][Content][status]} since %{[Attachment][RawLog][Content][since]}
+  - id: 4303
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Availability.Failure
+      '[Analyzer][Data]': *id001
+      '[Priority]': Low
+      '[Description]': 'Arbor internal error at %{[Attachment][RawLog][Content][location]}: %{[Attachment][RawLog][Content][reason]}'
+  - id: 4304
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Availability.DDoS
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Priority]': Medium
+      '[Description]': Arbor flow anomaly from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]} port %{[Attachment][RawLog][Content][destination][port]}

@@ -1,0 +1,53 @@
+ruleset:
+  name: cisco-vpn
+  rules:
+  - id: 300
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Authorized
+      '[Analyzer][Data]': &id001
+      - Log
+      - Authentication
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][name]}'
+      '[Priority]': Info
+      '[Description]': VPN user %{[Attachment][RawLog][Content][user][name]} disconnected (source %{[Attachment][RawLog][Content][source][address]})
+  - id: 301
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Unauthorized
+      '[Analyzer][Data]': *id001
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][target][name]}'
+      '[Priority]': Medium
+      '[Description]': VPN authentication rejected for user %{[Attachment][RawLog][Content][user][target][name]} from %{[Attachment][RawLog][Content][source][address]}
+  - id: 302
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Authorized
+      '[Analyzer][Data]': *id001
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][target][name]}'
+      '[Priority]': Info
+      '[Description]': VPN user %{[Attachment][RawLog][Content][user][target][name]} authenticated from %{[Attachment][RawLog][Content][source][address]}
+  - id: 303
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Unauthorized
+      '[Analyzer][Data]': *id001
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][target][name]}'
+      '[Priority]': High
+      '[Description]': VPN ADMIN logon REFUSED for user %{[Attachment][RawLog][Content][user][target][name]} (protocol %{[Attachment][RawLog][Content][network][protocol]})
+  - id: 304
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Authorized
+      '[Analyzer][Data]': *id001
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][target][name]}'
+      '[Priority]': Medium
+      '[Description]': VPN ADMIN logon GRANTED for user %{[Attachment][RawLog][Content][user][target][name]} (protocol %{[Attachment][RawLog][Content][network][protocol]})

@@ -1,0 +1,53 @@
+ruleset:
+  name: radius
+  rules:
+  - id: 35000
+    fields:
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Availability.HeartBeat
+      '[Analyzer][Data]': &id001
+      - Log
+      - Authentication
+      '[Priority]': Info
+      '[Description]': RADIUS server ready to process requests
+  - id: 35001
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Unauthorized
+      '[Analyzer][Data]': *id001
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][name]}'
+      '[Priority]': Medium
+      '[Description]': RADIUS login incorrect for user %{[Attachment][RawLog][Content][user][name]} from %{[Attachment][RawLog][Content][source][address]}
+  - id: 35002
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Unauthorized
+      '[Analyzer][Data]': *id001
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][name]}'
+      '[Priority]': Medium
+      '[Description]': RADIUS login incorrect for user %{[Attachment][RawLog][Content][user][name]} from %{[Attachment][RawLog][Content][source][address]}
+  - id: 35003
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Authorized
+      '[Analyzer][Data]': *id001
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][name]}'
+      '[Priority]': Info
+      '[Description]': RADIUS login OK for user %{[Attachment][RawLog][Content][user][name]} from %{[Attachment][RawLog][Content][source][address]}
+  - id: 35004
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Authorized
+      '[Analyzer][Data]': *id001
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][name]}'
+      '[Priority]': Info
+      '[Description]': RADIUS login OK for user %{[Attachment][RawLog][Content][user][name]}

@@ -1,0 +1,96 @@
+ruleset:
+  name: tacas_net
+  rules:
+  - id: 120001
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Unauthorized
+      '[Analyzer][Data]': &id001
+      - Log
+      - Authentication
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][target][name]}'
+      '[Priority]': Medium
+      '[Description]': 'TACACS+: no authorization entry found for user %{[Attachment][RawLog][Content][user][target][name]} from %{[Attachment][RawLog][Content][source][address]}'
+  - id: 120002
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Unauthorized
+      '[Analyzer][Data]': *id001
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][target][name]}'
+      '[Priority]': Medium
+      '[Description]': 'TACACS+: incorrect credentials for user %{[Attachment][RawLog][Content][user][target][name]} from %{[Attachment][RawLog][Content][source][address]}'
+  - id: 120003
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Authorized
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][target][name]}'
+      '[Priority]': Info
+      '[Description]': 'TACACS+: accounting start for user %{[Attachment][RawLog][Content][user][target][name]} (NAS %{[Attachment][RawLog][Content][source][address]})'
+  - id: 120004
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Authorized
+      '[Analyzer][Data]': *id001
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][target][name]}'
+      '[Priority]': Info
+      '[Description]': 'TACACS+: accounting stop for user %{[Attachment][RawLog][Content][user][target][name]} (NAS %{[Attachment][RawLog][Content][source][address]})'
+  - id: 120005
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Unauthorized
+      '[Analyzer][Data]': *id001
+      '[Priority]': Medium
+      '[Description]': 'TACACS+: command not authorized for user from client %{[Attachment][RawLog][Content][source][address]}'
+  - id: 120006
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Unauthorized
+      '[Analyzer][Data]': *id001
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][target][name]}'
+      '[Priority]': Medium
+      '[Description]': 'TACACS+: invalid user or password for user %{[Attachment][RawLog][Content][user][target][name]} from %{[Attachment][RawLog][Content][source][address]}'
+  - id: 120007
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Authorized
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][target][name]}'
+      '[Priority]': Info
+      '[Description]': 'TACACS+: accounting event for user %{[Attachment][RawLog][Content][user][target][name]} (NAS %{[Attachment][RawLog][Content][source][address]})'
+  - id: 120008
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Authorized
+      '[Analyzer][Data]': *id001
+      '[Priority]': Info
+      '[Description]': 'TACACS+: command authorized (Allow=True) from %{[Attachment][RawLog][Content][source][address]}'
+  - id: 120009
+    fields:
+      '[@metadata][IDMEFv2][source]': source
+      '[@metadata][IDMEFv2][target]': host
+      '[Type][0]': Cyber
+      '[Category][0]': Access.Authorized
+      '[Analyzer][Data]': *id001
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
+      '[Target][0][User]': '%{[Attachment][RawLog][Content][user][target][name]}'
+      '[Priority]': Info
+      '[Description]': 'TACACS+: accounting event for user %{[Attachment][RawLog][Content][user][target][name]} (NAS %{[Attachment][RawLog][Content][source][address]})'
