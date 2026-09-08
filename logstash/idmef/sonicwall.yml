@@ -3,6 +3,7 @@ ruleset:
   rules:
   - id: 4600
     fields:
+      '[Target][0][Port][0]': '%{[Attachment][RawLog][Content][destination][port]}'
       '[@metadata][IDMEFv2][source]': source
       '[@metadata][IDMEFv2][target]': host
       '[Type][0]': Cyber
@@ -16,6 +17,7 @@ ruleset:
       '[Description]': SonicWall management event for user %{[Attachment][RawLog][Content][user][target][name]} from %{[Attachment][RawLog][Content][source][address]}
   - id: 4601
     fields:
+      '[Target][0][Port][0]': '%{[Attachment][RawLog][Content][destination][port]}'
       '[@metadata][IDMEFv2][source]': source
       '[@metadata][IDMEFv2][target]': host
       '[Type][0]': Cyber
@@ -58,6 +60,7 @@ ruleset:
       '[Description]': 'SonicWall: possible SYN flood from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}:%{[Attachment][RawLog][Content][destination][port]}'
   - id: 4605
     fields:
+      '[Target][0][Port][0]': '%{[Attachment][RawLog][Content][destination][port]}'
       '[@metadata][IDMEFv2][source]': source
       '[@metadata][IDMEFv2][target]': host
       '[Type][0]': Cyber

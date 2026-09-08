@@ -23,6 +23,7 @@ ruleset:
       '[Description]': Cisco IPS signature fired (informational) from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}
   - id: 5002
     fields:
+      '[Target][0][Port][0]': '%{[Attachment][RawLog][Content][destination][port]}'
       '[@metadata][IDMEFv2][source]': source
       '[@metadata][IDMEFv2][target]': host
       '[Type][0]': Cyber
@@ -43,6 +44,7 @@ ruleset:
       '[Description]': Cisco IPS signature fired (informational) from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}
   - id: 5004
     fields:
+      '[Target][0][Port][0]': '%{[Attachment][RawLog][Content][destination][port]}'
       '[@metadata][IDMEFv2][source]': source
       '[@metadata][IDMEFv2][target]': host
       '[Type][0]': Cyber
@@ -53,6 +55,7 @@ ruleset:
       '[Description]': Cisco IPS signature fired (informational) from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}
   - id: 5005
     fields:
+      '[Target][0][Port][0]': '%{[Attachment][RawLog][Content][destination][port]}'
       '[@metadata][IDMEFv2][source]': source
       '[@metadata][IDMEFv2][target]': host
       '[Type][0]': Cyber

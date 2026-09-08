@@ -55,6 +55,8 @@ ruleset:
       '[Description]': 'SRX: authenticated user %{[Attachment][RawLog][Content][user][target][name]}'
   - id: 22006
     fields:
+      '[Target][0][Port][0]': '%{[Attachment][RawLog][Content][destination][port]}'
+      '[Target][0][IP]': '%{[Attachment][RawLog][Content][destination][address]}'
       '[@metadata][IDMEFv2][source]': source
       '[@metadata][IDMEFv2][target]': host
       '[Type][0]': Cyber

@@ -3,6 +3,7 @@ ruleset:
   rules:
   - id: 195
     fields:
+      '[Target][0][Port][0]': '%{[Attachment][RawLog][Content][destination][port]}'
       '[@metadata][IDMEFv2][source]': source
       '[@metadata][IDMEFv2][target]': host
       '[Type][0]': Cyber
@@ -25,6 +26,7 @@ ruleset:
       '[Description]': 'ASA IPS alert: %{[Attachment][RawLog][Content][event][reason]} from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}'
   - id: 197
     fields:
+      '[Target][0][Port][0]': '%{[Attachment][RawLog][Content][destination][port]}'
       '[@metadata][IDMEFv2][source]': source
       '[@metadata][IDMEFv2][target]': host
       '[Type][0]': Cyber
@@ -136,6 +138,7 @@ ruleset:
       '[Description]': ASA SSH session from %{[Attachment][RawLog][Content][source][address]} disconnected by SSH server
   - id: 208
     fields:
+      '[Target][0][Port][0]': '%{[Attachment][RawLog][Content][destination][port]}'
       '[@metadata][IDMEFv2][source]': source
       '[@metadata][IDMEFv2][target]': host
       '[Type][0]': Cyber
@@ -166,6 +169,7 @@ ruleset:
       '[Description]': ASA reverse path check failed from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]} (possible spoofing)
   - id: 211
     fields:
+      '[Source][0][Protocol][0]': '%{[Attachment][RawLog][Content][network][transport]}'
       '[@metadata][IDMEFv2][source]': source
       '[@metadata][IDMEFv2][target]': host
       '[Type][0]': Cyber
@@ -176,6 +180,7 @@ ruleset:
       '[Description]': ASA fragment database limit exceeded (src %{[Attachment][RawLog][Content][source][address]}, dst %{[Attachment][RawLog][Content][destination][address]})
   - id: 212
     fields:
+      '[Target][0][Port][0]': '%{[Attachment][RawLog][Content][destination][port]}'
       '[@metadata][IDMEFv2][source]': source
       '[@metadata][IDMEFv2][target]': host
       '[Type][0]': Cyber
@@ -195,6 +200,7 @@ ruleset:
       '[Description]': ASA received ARP collision from %{[Attachment][RawLog][Content][source][address]} (possible ARP spoofing)
   - id: 214
     fields:
+      '[Target][0][Port][0]': '%{[Attachment][RawLog][Content][destination][port]}'
       '[@metadata][IDMEFv2][source]': source
       '[@metadata][IDMEFv2][target]': host
       '[Type][0]': Cyber
@@ -205,6 +211,8 @@ ruleset:
       '[Description]': ASA %{[Attachment][RawLog][Content][network][transport]} access denied by ACL from %{[Attachment][RawLog][Content][source][address]} to %{[Attachment][RawLog][Content][destination][address]}
   - id: 215
     fields:
+      '[Target][0][Port][0]': '%{[Attachment][RawLog][Content][destination][port]}'
+      '[Source][0][Protocol][0]': '%{[Attachment][RawLog][Content][network][transport]}'
       '[@metadata][IDMEFv2][source]': source
       '[@metadata][IDMEFv2][target]': host
       '[Type][0]': Cyber
@@ -225,6 +233,7 @@ ruleset:
       '[Description]': ASA invalid destination for ICMP error message (src %{[Attachment][RawLog][Content][source][address]})
   - id: 219
     fields:
+      '[Target][0][Port][0]': '%{[Attachment][RawLog][Content][destination][port]}'
       '[@metadata][IDMEFv2][source]': source
       '[@metadata][IDMEFv2][target]': host
       '[Type][0]': Cyber
@@ -263,6 +272,7 @@ ruleset:
       '[Description]': ASA invalid destination for ICMP error message (src %{[Attachment][RawLog][Content][source][address]})
   - id: 224
     fields:
+      '[Target][0][Port][0]': '%{[Attachment][RawLog][Content][destination][port]}'
       '[@metadata][IDMEFv2][source]': source
       '[@metadata][IDMEFv2][target]': host
       '[Type][0]': Cyber

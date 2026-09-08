@@ -65,6 +65,7 @@ ruleset:
       '[Description]': 'TACACS+: invalid user or password for user %{[Attachment][RawLog][Content][user][target][name]} from %{[Attachment][RawLog][Content][source][address]}'
   - id: 120007
     fields:
+      '[Source][0][Protocol][0]': '%{[Attachment][RawLog][Content][network][transport]}'
       '[@metadata][IDMEFv2][source]': source
       '[@metadata][IDMEFv2][target]': host
       '[Type][0]': Cyber
@@ -85,6 +86,7 @@ ruleset:
       '[Description]': 'TACACS+: command authorized (Allow=True) from %{[Attachment][RawLog][Content][source][address]}'
   - id: 120009
     fields:
+      '[Source][0][Protocol][0]': '%{[Attachment][RawLog][Content][network][protocol]}'
       '[@metadata][IDMEFv2][source]': source
       '[@metadata][IDMEFv2][target]': host
       '[Type][0]': Cyber

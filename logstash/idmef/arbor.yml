@@ -13,6 +13,7 @@ ruleset:
         '1': Low
       fallback: Medium
     fields:
+      '[Source][0][Protocol][0]': '%{[Attachment][RawLog][Content][proto]}'
       '[@metadata][IDMEFv2][source]': source
       '[@metadata][IDMEFv2][target]': host
       '[Type][0]': Cyber
@@ -57,6 +58,7 @@ ruleset:
       '[Description]': 'Arbor internal error at %{[Attachment][RawLog][Content][location]}: %{[Attachment][RawLog][Content][reason]}'
   - id: 4304
     fields:
+      '[Source][0][Protocol][0]': '%{[Attachment][RawLog][Content][proto]}'
       '[@metadata][IDMEFv2][source]': source
       '[@metadata][IDMEFv2][target]': host
       '[Type][0]': Cyber
